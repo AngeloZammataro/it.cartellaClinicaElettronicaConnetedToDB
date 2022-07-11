@@ -1,7 +1,9 @@
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Person {
     private String name;
     private String surname;
@@ -15,4 +17,19 @@ public class Person {
     private String phoneNumber;
     private String emailAddress;
     private Gender gender;
+
+    public Person(String name, String surname, String nationality, String placeOfBirth, Date dateOfBirth, String fiscalCode, String documentNumber, String address, String city, String phoneNumber, String emailAddress, Gender gender) {
+        this.name = name;
+        this.surname = surname;
+        this.nationality = nationality;
+        this.placeOfBirth = placeOfBirth;
+        this.dateOfBirth = dateOfBirth;
+        this.fiscalCode = fiscalCode;
+        this.documentNumber = documentNumber;
+        this.address = address;
+        this.city = city;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.gender = gender;
+    }
 }

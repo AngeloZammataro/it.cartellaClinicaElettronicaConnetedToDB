@@ -1,11 +1,14 @@
-import lombok.Data;
+import lombok.*;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class MainTest {
     public static void main(String[] args) {
+
 
         Date date = new Date(1976-12-10);
         Date date2 = new Date(1956-01-05);
@@ -15,7 +18,12 @@ public class MainTest {
         java.sql.Date date1 = java.sql.Date.valueOf(formattedDate);
         java.sql.Date datePatient1 = java.sql.Date.valueOf(formattedDatePatient);
 
-        Doctor doctor = new Doctor();
+        Doctor doctor = new Doctor("Bruce","Banner","United States","New York",date1,
+                "SDFGHJK615166L","KA452262", "Via Verdi, 14","New York",
+                "3336598552","3336965698",Gender.MALE,"greenForever",
+                "5pacc4",RoleInClinic.DOCTOR,"BRU456BAN",PlaceOfWork.NAPOLI,
+                MedicalSpecializzation.NEUROLOGY);
+/*
         doctor.setName("Bruce");
         doctor.setSurname("Banner");
         doctor.setNationality("United States");
@@ -34,8 +42,13 @@ public class MainTest {
         doctor.setBadgeNumber("BRU456BAN");
         doctor.setPlaceOfWork(PlaceOfWork.NAPOLI);
         doctor.setMedicalSpecializzation(MedicalSpecializzation.NEUROLOGY);
+*/
+        Patient patient = new Patient("Sara","Connor","United Kindom","London",
+                datePatient1,"sracnr54de85fa","na456971","Via delle Alpi, 1",
+                "Palermo","3256988745","gammaray@yahoo.com",Gender.FEMALE,
+                "headache");
 
-        Patient patient = new Patient();
+/*
         patient.setName("Sara");
         patient.setSurname("Connor");
         patient.setNationality("United Kindom");
@@ -49,7 +62,7 @@ public class MainTest {
         patient.setPhoneNumber("3256988745");
         patient.setEmailAddress("gammaray@yahoo.com");
         patient.setMedicalPathology("headache");
-
+*/
         try {
 
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/it.cartellaClinicaElettronicaConnetedToDB", "root", "S1V1sP4c3mP4r4B3llum");
