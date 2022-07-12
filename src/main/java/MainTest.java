@@ -1,9 +1,8 @@
 import lombok.*;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,6 +14,7 @@ public class MainTest {
         LocalDate dateOfBirthDoctor2 = LocalDate.of(1966,1,15);
         LocalDate dateOfBirthSecretary = LocalDate.of(1956,1,5);
         LocalDate dateOfBirthPatient = LocalDate.of(1986,5,24);
+        LocalDate dateOfBirthPatient2 = LocalDate.of(1941,1,1);
 
         Doctor doctor = new Doctor("Bruce","Banner","United States","New York",dateOfBirthDoctor,
                 "SDFGHJK615166L","KA452262", "Via Verdi, 14","New York",
@@ -54,14 +54,22 @@ public class MainTest {
                 SecretaryRole.FRONT_OFFICE);
 
         Patient patient = new Patient("Sara","Connor","United Kindom","London",
-                dateOfBirthPatient,"sracnr54de85fa","na456971","Via delle Alpi, 1",
+                dateOfBirthPatient,"sracnr54de85fa","na456971","Via delle Alpi, 51",
                 "Palermo","3256988745","gammaray@yahoo.com",Gender.FEMALE,
                 "headache");
 
-        //LocalDateTime dateTimeOfAppointment1 = LocalDateTime.of(2022,07,13,10,30);
-        LocalDate dateOfAppointment = LocalDate.of(2022,7,13);
-        Appointment appointment1 = new Appointment(dateOfAppointment,doctor,patient,"Visita generica");
+        Patient patient2 = new Patient("Steve","Rogers","United States","New York",
+                dateOfBirthPatient2,"STVRGS54a54safv5","GA457771","Via degli Scudi, 1",
+                "Berlino","3358966541","shield@yahoo.com",Gender.MALE,
+                "principle of freezing");
 
+        LocalDate dateOfAppointment = LocalDate.of(2022,7,13);
+        LocalTime timeOfAppointment = LocalTime.of(10,30,00);
+        Appointment appointment1 = new Appointment(dateOfAppointment,timeOfAppointment,doctor,patient,"Visita generica 1");
+
+        LocalDate dateOfAppointment2 = LocalDate.of(2022,7,13);
+        LocalTime timeOfAppointment2 = LocalTime.of(15,30,00);
+        Appointment appointment2 = new Appointment(dateOfAppointment,timeOfAppointment,doctor,patient,"Visita generica 2");
 /*
         patient.setName("Sara");
         patient.setSurname("Connor");
@@ -100,7 +108,7 @@ public class MainTest {
                     + "surname VARCHAR (20) NOT NULL, "
                     + "nationality VARCHAR (20) NOT NULL, "
                     + "placeOfBirth VARCHAR (20) NOT NULL, "
-                    + "dateOfBirth DATETIME NOT NULL, "
+                    + "dateOfBirth DATE NOT NULL, "
                     + "fiscalCode VARCHAR (16) NOT NULL, "
                     + "documentNumber VARCHAR (10) NOT NULL, "
                     + "address VARCHAR (30) NOT NULL, "
@@ -127,7 +135,7 @@ public class MainTest {
                     + "surname VARCHAR (20) NOT NULL, "
                     + "nationality VARCHAR (20) NOT NULL, "
                     + "placeOfBirth VARCHAR (20) NOT NULL, "
-                    + "dateOfBirth DATETIME NOT NULL, "
+                    + "dateOfBirth DATE NOT NULL, "
                     + "fiscalCode VARCHAR (16) NOT NULL, "
                     + "documentNumber VARCHAR (10) NOT NULL, "
                     + "address VARCHAR (30) NOT NULL, "
@@ -153,7 +161,7 @@ public class MainTest {
                     + "surname VARCHAR (20) NOT NULL, "
                     + "nationality VARCHAR (20) NOT NULL, "
                     + "placeOfBirth VARCHAR (20) NOT NULL, "
-                    + "dateOfBirth DATETIME NOT NULL, "
+                    + "dateOfBirth DATE NOT NULL, "
                     + "fiscalCode VARCHAR (16) NOT NULL, "
                     + "documentNumber VARCHAR (10) NOT NULL, "
                     + "address VARCHAR (30) NOT NULL, "
@@ -171,7 +179,8 @@ public class MainTest {
             //Create a table appointment
             String createTableAppointment = "CREATE TABLE appointment("
                     + "appointmentId INT NOT NULL AUTO_INCREMENT, "
-                    + "dateOfAppointment DATETIME NOT NULL, "
+                    + "dateOfAppointment DATE NOT NULL, "
+                    + "timeOfAppointment TIME NOT NULL, "
                     + "doctorId INT, "
                     + "patientId INT, "
                     + "medicalExaminationReason VARCHAR (20) NOT NULL, "
@@ -308,7 +317,7 @@ public class MainTest {
             preparedStatementPatient.setString(4, patient.getPlaceOfBirth());
             preparedStatementPatient.setDate(5, Date.valueOf(dateOfBirthPatient));
             preparedStatementPatient.setString(6, patient.getFiscalCode());
-            preparedStatementPatient.setString(7, doctor.getDocumentNumber());
+            preparedStatementPatient.setString(7, patient.getDocumentNumber());
             preparedStatementPatient.setString(8, patient.getAddress());
             preparedStatementPatient.setString(9, patient.getCity());
             preparedStatementPatient.setString(10, patient.getPhoneNumber());
@@ -318,22 +327,55 @@ public class MainTest {
 
         preparedStatementPatient.executeUpdate();
             System.out.println("Done!");
+
+            PreparedStatement preparedStatementPatient2 = connection.prepareStatement(sqlPatient,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatementPatient2.setString(1, patient2.getName());
+            preparedStatementPatient2.setString(2, patient2.getSurname());
+            preparedStatementPatient2.setString(3, patient2.getNationality());
+            preparedStatementPatient2.setString(4, patient2.getPlaceOfBirth());
+            preparedStatementPatient2.setDate(5, Date.valueOf(dateOfBirthPatient2));
+            preparedStatementPatient2.setString(6, patient2.getFiscalCode());
+            preparedStatementPatient2.setString(7, patient2.getDocumentNumber());
+            preparedStatementPatient2.setString(8, patient2.getAddress());
+            preparedStatementPatient2.setString(9, patient2.getCity());
+            preparedStatementPatient2.setString(10, patient2.getPhoneNumber());
+            preparedStatementPatient2.setString(11, patient2.getEmailAddress());
+            preparedStatementPatient2.setString(12, String.valueOf(patient2.getGender()));
+            preparedStatementPatient2.setString(13, patient2.getMedicalPathology());
+
+            preparedStatementPatient2.executeUpdate();
+            System.out.println("Done!");
 //----------------------------------------------------------------------------------------------------------------------
 
             System.out.println("Inserting records into the table 'appointment'");
             //prepare String with placeholder
-            String sqlAppointment = "INSERT INTO appointment(dateOfAppointment,doctorId,patientId,medicalExaminationReason)"
-                    + "VALUES(?,?,?,?)";
+            String sqlAppointment = "INSERT INTO appointment(dateOfAppointment,timeOfAppointment,doctorId,patientId,medicalExaminationReason)"
+                    + "VALUES(?,?,?,?,?)";
 
             PreparedStatement preparedStatementAppointment = connection.prepareStatement(sqlAppointment,
                     Statement.RETURN_GENERATED_KEYS);
 
             preparedStatementAppointment.setDate(1, Date.valueOf(dateOfAppointment));
-            preparedStatementAppointment.setInt(2, 1);
+            preparedStatementAppointment.setTime(2, Time.valueOf(timeOfAppointment));
             preparedStatementAppointment.setInt(3, 1);
-            preparedStatementAppointment.setString(4, appointment1.getMedicalExaminationReason());
+            preparedStatementAppointment.setInt(4, 1);
+            preparedStatementAppointment.setString(5, appointment1.getMedicalExaminationReason());
 
             preparedStatementAppointment.executeUpdate();
+            System.out.println("Done!");
+
+            PreparedStatement preparedStatementAppointment2 = connection.prepareStatement(sqlAppointment,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatementAppointment2.setDate(1, Date.valueOf(dateOfAppointment2));
+            preparedStatementAppointment2.setTime(2, Time.valueOf(timeOfAppointment2));
+            preparedStatementAppointment2.setInt(3, 2);
+            preparedStatementAppointment2.setInt(4, 1);
+            preparedStatementAppointment2.setString(5, appointment2.getMedicalExaminationReason());
+
+            preparedStatementAppointment2.executeUpdate();
             System.out.println("Done!");
 
 //----------------------------------------------------------------------------------------------------------------------
