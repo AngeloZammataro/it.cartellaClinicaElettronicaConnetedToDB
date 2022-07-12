@@ -12,15 +12,21 @@ public class MainTest {
     public static void main(String[] args) {
 
         LocalDate dateOfBirthDoctor = LocalDate.of(1976,10,4);
+        LocalDate dateOfBirthDoctor2 = LocalDate.of(1966,1,15);
         LocalDate dateOfBirthSecretary = LocalDate.of(1956,1,5);
         LocalDate dateOfBirthPatient = LocalDate.of(1986,5,24);
 
         Doctor doctor = new Doctor("Bruce","Banner","United States","New York",dateOfBirthDoctor,
                 "SDFGHJK615166L","KA452262", "Via Verdi, 14","New York",
-                "3336598552","3336965698",Gender.MALE,"greenForever",
+                "3336598552","greenforever@gmail.com",Gender.MALE,"greenForever",
                 "5pacc4",RoleInClinic.DOCTOR,"BRU456BAN",PlaceOfWork.NAPOLI,
                 MedicalSpecializzation.NEUROLOGY);
-        System.out.println();
+
+        Doctor doctor2 = new Doctor("Steven","Strange","United States","New York",dateOfBirthDoctor2,
+                "BDGHJL85LK541V","KA459872", "Via degli Arcimboldi, 111","New York",
+                "3215455896","dottstrange@gmail.com",Gender.MALE,"thedoctor",
+                "magician",RoleInClinic.DOCTOR,"STE654STR",PlaceOfWork.ROMA,
+                MedicalSpecializzation.ORTHOPAEDICS);
 /*
         doctor.setName("Bruce");
         doctor.setSurname("Banner");
@@ -52,6 +58,10 @@ public class MainTest {
                 "Palermo","3256988745","gammaray@yahoo.com",Gender.FEMALE,
                 "headache");
 
+        //LocalDateTime dateTimeOfAppointment1 = LocalDateTime.of(2022,07,13,10,30);
+        LocalDate dateOfAppointment = LocalDate.of(2022,7,13);
+        Appointment appointment1 = new Appointment(dateOfAppointment,doctor,patient,"Visita generica");
+
 /*
         patient.setName("Sara");
         patient.setSurname("Connor");
@@ -69,17 +79,20 @@ public class MainTest {
 */
         try {
 
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/it.cartellaClinicaElettronicaConnetedToDB", "root", "S1V1sP4c3mP4r4B3llum");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/it.cartellaClinicaElettronicaConnetedToDB",
+                    "root", "S1V1sP4c3mP4r4B3llum");
             Statement statement = connection.createStatement();
 
             //Drop table and view for test
+            String query03 = "DROP TABLE IF EXISTS `appointment`;";
+            statement.execute(query03);
             String query0 = "DROP TABLE IF EXISTS `doctor`;";
             statement.execute(query0);
             String query01 = "DROP TABLE IF EXISTS `patient`;";
             statement.execute(query01);
             String query02 = "DROP TABLE IF EXISTS `secretary`;";
             statement.execute(query02);
-
+//----------------------------------------------------------------------------------------------------------------------
             //Create a table doctor
             String createTableDoctorQuery = "CREATE TABLE doctor("
                     + "doctorId INT NOT NULL AUTO_INCREMENT, "
@@ -93,7 +106,7 @@ public class MainTest {
                     + "address VARCHAR (30) NOT NULL, "
                     + "city VARCHAR (20) NOT NULL, "
                     + "phoneNumber VARCHAR (20) NOT NULL, "
-                    + "emailAddress VARCHAR (20) NOT NULL, "
+                    + "emailAddress VARCHAR (30) NOT NULL, "
                     + "gender ENUM('MALE','FEMALE'), "
                     + "roleInClinic ENUM('DOCTOR','SECRETARY','PATIENT','GUEST'), "
                     + "login VARCHAR (20) NOT NULL, "
@@ -106,7 +119,7 @@ public class MainTest {
             //Execute query
             statement.execute(createTableDoctorQuery);
             System.out.println("The table 'doctor' was created!");
-
+//----------------------------------------------------------------------------------------------------------------------
             //Create a table secretary
             String createTableSecretary = "CREATE TABLE secretary("
                     + "secretaryId INT NOT NULL AUTO_INCREMENT, "
@@ -132,7 +145,7 @@ public class MainTest {
             //Execute query
             statement.execute(createTableSecretary);
             System.out.println("The table 'secretary' was created!");
-
+//----------------------------------------------------------------------------------------------------------------------
             //Create a table patient
             String createTablePatientQuery = "CREATE TABLE patient("
                     + "patientId INT NOT NULL AUTO_INCREMENT, "
@@ -154,6 +167,26 @@ public class MainTest {
             statement.execute(createTablePatientQuery);
 
             System.out.println("The table 'patient' was created!");
+//----------------------------------------------------------------------------------------------------------------------
+            //Create a table appointment
+            String createTableAppointment = "CREATE TABLE appointment("
+                    + "appointmentId INT NOT NULL AUTO_INCREMENT, "
+                    + "dateOfAppointment DATETIME NOT NULL, "
+                    + "doctorId INT, "
+                    + "patientId INT, "
+                    + "medicalExaminationReason VARCHAR (20) NOT NULL, "
+                    + "PRIMARY KEY (appointmentId), "
+                   // + "FOREIGN KEY(doctorId) REFERENCES doctor(doctorId)"
+                    + "FOREIGN KEY(patientId) REFERENCES patient(patientId))";
+            //Execute query
+            statement.execute(createTableAppointment);
+
+            System.out.println("The table 'appointment' was created!");
+
+            String addForeignkeyToAppointment = "ALTER TABLE `appointment` ADD INDEX `doctorId` (`doctorId`)," +
+                    " ADD CONSTRAINT `FK_appointment_doctor` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`);";
+            statement.execute(addForeignkeyToAppointment);
+//----------------------------------------------------------------------------------------------------------------------
 
             System.out.println("Inserting records into the table 'doctor'");
 
@@ -184,10 +217,49 @@ public class MainTest {
             preparedStatement.setString(16, doctor.getBadgeNumber());
             preparedStatement.setString(17, String.valueOf(doctor.getPlaceOfWork()));
             preparedStatement.setString(18, String.valueOf(doctor.getMedicalSpecializzation()));
-
             preparedStatement.executeUpdate();
             System.out.println("Done!");
+            //**********************************************************************************************************************
+            int generatedkey=0;
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                generatedkey = rs.getInt(1);
+                System.out.println("Auto Generated Primary Key " + generatedkey);
+            }
+//**********************************************************************************************************************
 
+            PreparedStatement preparedStatement2 = connection.prepareStatement(sqlX,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement2.setString(1, doctor2.getName());
+            preparedStatement2.setString(2, doctor2.getSurname());
+            preparedStatement2.setString(3, doctor2.getNationality());
+            preparedStatement2.setString(4, doctor2.getPlaceOfBirth());
+            preparedStatement2.setDate(5, Date.valueOf(dateOfBirthDoctor2));
+            preparedStatement2.setString(6, doctor2.getFiscalCode());
+            preparedStatement2.setString(7, doctor2.getDocumentNumber());
+            preparedStatement2.setString(8, doctor2.getAddress());
+            preparedStatement2.setString(9, doctor2.getCity());
+            preparedStatement2.setString(10, doctor2.getPhoneNumber());
+            preparedStatement2.setString(11, doctor2.getEmailAddress());
+            preparedStatement2.setString(12, String.valueOf(doctor2.getGender()));
+            preparedStatement2.setString(13, String.valueOf(doctor2.getRoleInClinic()));
+            preparedStatement2.setString(14, doctor2.getLogin());
+            preparedStatement2.setString(15, doctor2.getPassword());
+            preparedStatement2.setString(16, doctor2.getBadgeNumber());
+            preparedStatement2.setString(17, String.valueOf(doctor2.getPlaceOfWork()));
+            preparedStatement2.setString(18, String.valueOf(doctor2.getMedicalSpecializzation()));
+
+            preparedStatement2.executeUpdate();
+            System.out.println("Done!");
+//**********************************************************************************************************************
+            int generatedkey2 = 0;
+            ResultSet rs2 = preparedStatement2.getGeneratedKeys();
+            if (rs2.next()) {
+                generatedkey2 = rs2.getInt(1);
+                System.out.println("Auto Generated Primary Key " + generatedkey2);
+            }
+//**********************************************************************************************************************
             System.out.println("Inserting records into the table 'secretary'");
 
             //prepare String with placeholder
@@ -246,6 +318,25 @@ public class MainTest {
 
         preparedStatementPatient.executeUpdate();
             System.out.println("Done!");
+//----------------------------------------------------------------------------------------------------------------------
+
+            System.out.println("Inserting records into the table 'appointment'");
+            //prepare String with placeholder
+            String sqlAppointment = "INSERT INTO appointment(dateOfAppointment,doctorId,patientId,medicalExaminationReason)"
+                    + "VALUES(?,?,?,?)";
+
+            PreparedStatement preparedStatementAppointment = connection.prepareStatement(sqlAppointment,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatementAppointment.setDate(1, Date.valueOf(dateOfAppointment));
+            preparedStatementAppointment.setInt(2, 1);
+            preparedStatementAppointment.setInt(3, 1);
+            preparedStatementAppointment.setString(4, appointment1.getMedicalExaminationReason());
+
+            preparedStatementAppointment.executeUpdate();
+            System.out.println("Done!");
+
+//----------------------------------------------------------------------------------------------------------------------
 
         }
         catch (SQLException e){
