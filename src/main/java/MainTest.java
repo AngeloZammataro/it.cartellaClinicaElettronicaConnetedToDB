@@ -377,9 +377,35 @@ public class MainTest {
 
             preparedStatementAppointment2.executeUpdate();
             System.out.println("Done!");
-
 //----------------------------------------------------------------------------------------------------------------------
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM appointment");
+            System.out.println("Query for date, time, doctorId, patientId, medicalExaminationReason:");
+            while (resultSet.next()){
+                //surnames.add(resultSet.getString("last_name"));
+                System.out.println(resultSet.getDate("dateOfAppointment") + " - " +
+                        resultSet.getTime("timeOfAppointment")+ " - " +
+                        resultSet.getInt("doctorId")+ " - " +
+                        resultSet.getInt("patientId")+ " - " +
+                        resultSet.getString("medicalExaminationReason")+ " - "
+                        );
+            }
+            System.out.println("Done!");
 
+            ResultSet resultSet2 = statement.executeQuery("SELECT `appointment`.`dateOfAppointment`, `appointment`.`timeOfAppointment`, `doctor`.`surname`," +
+                    "`patient`.`surname`, `appointment`.`medicalExaminationReason` FROM `appointment`" +
+                    "JOIN `doctor` ON `doctor`.`doctorId` = `appointment`.`appointmentId`" +
+                    "JOIN `patient` ON `patient`.`patientId` = `appointment`.`appointmentId`" +
+                    "WHERE `dateOfAppointment` BETWEEN '2022-07-01' AND '2022-07-15';");
+            System.out.println("Select all appointment BETWEEN '2022-07-01' AND '2022-07-15'");
+            while (resultSet2.next()){
+                //surnames.add(resultSet.getString("last_name"));
+                System.out.println(resultSet2.getDate("dateOfAppointment") + " - " +
+                        resultSet2.getTime("timeOfAppointment")+ " - " +
+                        resultSet2.getString("doctor.surname")+ " - " +
+                        resultSet2.getString("patient.surname")+ " - " +
+                        resultSet2.getString("medicalExaminationReason"));
+            }
+            System.out.println("Done!");
         }
         catch (SQLException e){
             e.printStackTrace();
