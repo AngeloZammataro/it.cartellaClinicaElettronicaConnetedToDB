@@ -1,6 +1,7 @@
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -9,7 +10,7 @@ public class Person {
     private String surname;
     private String nationality;
     private String placeOfBirth;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String fiscalCode;
     private String documentNumber;
     private String address;
@@ -18,7 +19,7 @@ public class Person {
     private String emailAddress;
     private Gender gender;
 
-    public Person(String name, String surname, String nationality, String placeOfBirth, Date dateOfBirth, String fiscalCode, String documentNumber, String address, String city, String phoneNumber, String emailAddress, Gender gender) {
+    public Person(String name, String surname, String nationality, String placeOfBirth, LocalDate dateOfBirth, String fiscalCode, String documentNumber, String address, String city, String phoneNumber, String emailAddress, Gender gender) {
         this.name = name;
         this.surname = surname;
         this.nationality = nationality;
