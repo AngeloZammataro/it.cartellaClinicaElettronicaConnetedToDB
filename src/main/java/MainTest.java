@@ -81,6 +81,10 @@ public class MainTest {
             //Drop table and view for test
             String query03 = "DROP TABLE IF EXISTS `appointment`;";
             statement.execute(query03);
+            String query04 = "DROP TABLE IF EXISTS `medicalreport`;";
+            statement.execute(query04);
+            String query05 = "DROP TABLE IF EXISTS `medicalrecord`;";
+            statement.execute(query05);
             String query0 = "DROP TABLE IF EXISTS `doctor`;";
             statement.execute(query0);
             String query01 = "DROP TABLE IF EXISTS `patient`;";
@@ -188,6 +192,46 @@ public class MainTest {
             String addForeignkeyToAppointment = "ALTER TABLE `appointment` ADD INDEX `doctorId` (`doctorId`)," +
                     " ADD CONSTRAINT `FK_appointment_doctor` FOREIGN KEY (`doctorId`) REFERENCES `doctor` (`doctorId`);";
             statement.execute(addForeignkeyToAppointment);
+
+//----------------------------------------------------------------------------------------------------------------------
+            //Create a table MedicalReport
+            String createTableMedicalReport = "CREATE TABLE medicalReport("
+                    + "medicalReportId INT NOT NULL AUTO_INCREMENT, "
+                    + "date DATE NOT NULL, "
+                    + "doctorId INT NOT NULL, "
+                    + "medicalRecordId INT, "
+                    + "anamnesis VARCHAR (500), "
+                    + "diagnosis VARCHAR (500), "
+                    + "therapy VARCHAR (500), "
+                    + "prognosis INT, "
+                    + "PRIMARY KEY (medicalReportId), "
+                    + "FOREIGN KEY(doctorId) REFERENCES doctor(doctorId))";
+
+            //Execute query
+            statement.execute(createTableMedicalReport);
+
+            System.out.println("The table 'medicalReport' was created!");
+
+//----------------------------------------------------------------------------------------------------------------------
+            //Create a table MedicalRecord
+            String createTableMedicalRecord = "CREATE TABLE medicalRecord("
+                    + "medicalRecordId INT NOT NULL AUTO_INCREMENT, "
+                    + "date DATE NOT NULL, "
+                    + "patientId INT NOT NULL, "
+                    + "medicalReportId INT, "
+                    + "PRIMARY KEY (medicalRecordId), "
+                    + "FOREIGN KEY(patientId) REFERENCES patient(patientId))";
+
+            //Execute query
+            statement.execute(createTableMedicalRecord);
+
+            System.out.println("The table 'medicalRecord' was created!");
+
+            //Alter the table for insert a second FOREIGN KEY
+            String addForeignkeyToMedicalRecord = "ALTER TABLE `medicalRecord` ADD INDEX `medicalReportId` (`medicalReportId`)," +
+                    " ADD CONSTRAINT `FK_medicalRecord_medicalReport` FOREIGN KEY (`medicalReportId`) REFERENCES `medicalReport` (`medicalReportId`);";
+            statement.execute(addForeignkeyToMedicalRecord);
+
 
 //----------------------------------------------------------------------------------------------------------------------
             System.out.println("Registering a new 'doctor'...");
