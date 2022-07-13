@@ -1,15 +1,16 @@
 import lombok.*;
-
-import java.util.Date;
+import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicalReport {
     private Doctor doctor;
-    private Date dateOfReport;
+    private LocalDate dateOfmedicalReport;
     private String medicalExams;
     private String anamnesis;
-    private int prognosis;
+    private String diagnosis;
     private String therapy;
+    private int prognosis;
+
 }

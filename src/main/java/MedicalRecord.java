@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicalRecord {
-    private LocalDate date;
+    private LocalDate dateMedRec;
     private Patient patient;
-    private List<MedicalReport> ListOfMedicalReport = new ArrayList<>();
+    private MedicalReport medicalReport;
 }

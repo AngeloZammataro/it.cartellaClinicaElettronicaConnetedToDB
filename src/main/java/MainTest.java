@@ -3,6 +3,8 @@ import lombok.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -65,8 +67,16 @@ public class MainTest {
         //Create date and time for appointment 2
         LocalDate dateOfAppointment2 = LocalDate.of(2022,7,13);
         LocalTime timeOfAppointment2 = LocalTime.of(15,30,00);
-        Appointment appointment2 = new Appointment(dateOfAppointment,timeOfAppointment,
+        Appointment appointment2 = new Appointment(dateOfAppointment2,timeOfAppointment2,
                 doctor,patient,"Visita generica 2");
+
+//----------------------------------------------------------------------------------------------------------------------
+        //Create date for medicalRecord
+        LocalDate dateOfmedicalRecord = LocalDate.of(2022,7,13);
+        LocalDate dateOfmedicalReport = LocalDate.of(2022,5,1);
+        MedicalReport medicalReport = new MedicalReport(doctor,dateOfmedicalReport,"x-ray",
+                "anamnesis","diagnosis","therapy",7);
+        MedicalRecord medicalRecord = new MedicalRecord(dateOfmedicalRecord,patient,medicalReport);
 
         //Start with try/catch block
         try {
@@ -81,10 +91,10 @@ public class MainTest {
             //Drop table and view for test
             String query03 = "DROP TABLE IF EXISTS `appointment`;";
             statement.execute(query03);
-            String query04 = "DROP TABLE IF EXISTS `medicalreport`;";
-            statement.execute(query04);
             String query05 = "DROP TABLE IF EXISTS `medicalrecord`;";
             statement.execute(query05);
+            String query04 = "DROP TABLE IF EXISTS `medicalreport`;";
+            statement.execute(query04);
             String query0 = "DROP TABLE IF EXISTS `doctor`;";
             statement.execute(query0);
             String query01 = "DROP TABLE IF EXISTS `patient`;";
@@ -197,9 +207,10 @@ public class MainTest {
             //Create a table MedicalReport
             String createTableMedicalReport = "CREATE TABLE medicalReport("
                     + "medicalReportId INT NOT NULL AUTO_INCREMENT, "
-                    + "date DATE NOT NULL, "
+                    + "dateOfmedicalReport DATE NOT NULL, "
                     + "doctorId INT NOT NULL, "
                     + "medicalRecordId INT, "
+                    + "medicalExams VARCHAR (500), "
                     + "anamnesis VARCHAR (500), "
                     + "diagnosis VARCHAR (500), "
                     + "therapy VARCHAR (500), "
@@ -216,7 +227,7 @@ public class MainTest {
             //Create a table MedicalRecord
             String createTableMedicalRecord = "CREATE TABLE medicalRecord("
                     + "medicalRecordId INT NOT NULL AUTO_INCREMENT, "
-                    + "date DATE NOT NULL, "
+                    + "dateMedRec DATE NOT NULL, "
                     + "patientId INT NOT NULL, "
                     + "medicalReportId INT, "
                     + "PRIMARY KEY (medicalRecordId), "
@@ -421,6 +432,43 @@ public class MainTest {
 
             preparedStatementAppointment2.executeUpdate();
             System.out.println("A new appointment was created");
+
+//----------------------------------------------------------------------------------------------------------------------
+            System.out.println("Creating a new 'medicalReport'...");
+            //prepare String with placeholder
+            String sqlMedicalReport = "INSERT INTO medicalReport(doctorId,dateOfmedicalReport,medicalExams,anamnesis," +
+                    "diagnosis,therapy,prognosis)"
+                    + "VALUES(?,?,?,?,?,?,?)";
+
+            PreparedStatement preparedStatementMedicalReport = connection.prepareStatement(sqlMedicalReport,
+                    Statement.RETURN_GENERATED_KEYS);
+            preparedStatementMedicalReport.setInt(1,1);
+            preparedStatementMedicalReport.setDate(2, Date.valueOf(dateOfmedicalReport));
+            preparedStatementMedicalReport.setString(3, "medicalExams");
+            preparedStatementMedicalReport.setString(4,"anamnesis");
+            preparedStatementMedicalReport.setString(5,"diagnosis");
+            preparedStatementMedicalReport.setString(6,"therapy");
+            preparedStatementMedicalReport.setInt(7,7);
+
+            preparedStatementMedicalReport.executeUpdate();
+            System.out.println("A new medicalReport was created");
+//----------------------------------------------------------------------------------------------------------------------
+
+            System.out.println("Creating a new 'medicalRecord'...");
+            //prepare String with placeholder
+            String sqlMedicalRecord = "INSERT INTO medicalRecord(dateMedRec,patientId,medicalReportId)"
+                    + "VALUES(?,?,?)";
+
+            PreparedStatement preparedStatementMedicalRecord = connection.prepareStatement(sqlMedicalRecord,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatementMedicalRecord.setDate(1, Date.valueOf(dateOfmedicalRecord));
+            preparedStatementMedicalRecord.setInt(2, 1);
+            preparedStatementMedicalRecord.setInt(3,1);
+
+            preparedStatementMedicalRecord.executeUpdate();
+            System.out.println("A new medicalRecord was created");
+
 
 //----------------------------------------------------------------------------------------------------------------------
             //Create a select
