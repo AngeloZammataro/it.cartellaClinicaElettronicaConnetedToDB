@@ -238,12 +238,6 @@ public class MainTest {
 
             System.out.println("The table 'medicalRecord' was created!");
 
-            //Alter the table for insert a second FOREIGN KEY
-            String addForeignkeyToMedicalRecord = "ALTER TABLE `medicalRecord` ADD INDEX `medicalReportId` (`medicalReportId`)," +
-                    " ADD CONSTRAINT `FK_medicalRecord_medicalReport` FOREIGN KEY (`medicalReportId`) REFERENCES `medicalReport` (`medicalReportId`);";
-            statement.execute(addForeignkeyToMedicalRecord);
-
-
 //----------------------------------------------------------------------------------------------------------------------
             System.out.println("Registering a new 'doctor'...");
 
@@ -530,5 +524,6 @@ public class MainTest {
         catch (SQLException e){
             e.printStackTrace();
         }
+        //mainFrame mainFrame = new mainFrame();
     }
 }
