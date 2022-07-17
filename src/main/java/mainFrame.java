@@ -16,8 +16,13 @@ public class mainFrame extends  JFrame{
     private JLabel labelJAVA;
     private JPanel mainPanel;
     private JButton buttonSelectAllNurses;
+    private JButton buttonDeleteAllNurses;
+    private JButton buttonRebuild;
+    private JButton buttonDeleteForId;
+    private JTextField textFieldId;
+    private JLabel labelId;
+    private JLabel labelRegisterNurse;
     List<Nurse>nurseList = new ArrayList<>();
-    List<Nurse>AllNurseFromDb = new ArrayList<>();
 
     public mainFrame(){
         setContentPane(mainPanel);
@@ -25,8 +30,6 @@ public class mainFrame extends  JFrame{
         setSize(450,300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-
-
 
         buttonOk.addActionListener(new ActionListener() {
             @Override
@@ -49,6 +52,7 @@ public class mainFrame extends  JFrame{
                 textFieldName.setText("");
                 textFieldSurname.setText("");
                 labelJAVA.setText("");
+                labelId.setText("");
             }
         });
         buttonSelectAllNurses.addActionListener(new ActionListener() {
@@ -62,6 +66,25 @@ public class mainFrame extends  JFrame{
                     surnName = textFieldSurname.getText();
                     labelJAVA.setText(name + " " + surnName);
                 }
+            }
+        });
+        buttonDeleteAllNurses.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteAllNurses();
+            }
+        });
+        buttonRebuild.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rebuildAllNurses();
+            }
+        });
+        buttonDeleteForId.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int idFromDb = Integer.parseInt(textFieldId.getText());
+                deleteNursesForSurnameAndName(idFromDb);
             }
         });
     }
@@ -135,6 +158,72 @@ public class mainFrame extends  JFrame{
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    public void deleteAllNurses(){
+
+        try {
+            //Create a connection to database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swingGuiTest",
+                    "root", "S1V1sP4c3mP4r4B3llum");
+            Statement statement = connection.createStatement();
+
+            //Create a delete
+            String deleteAllNurses = "UPDATE nurse " +
+                    "SET status = 'DELETED' ";
+            statement.executeUpdate(deleteAllNurses);
+            System.out.println("SET nurse to status DELETED");
+            System.out.println("Done!");
+
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+//----------------------------------------------------------------------------------------------------------------------
+    public void deleteNursesForSurnameAndName(int id){
+
+        try {
+            //Create a connection to database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swingGuiTest",
+                    "root", "S1V1sP4c3mP4r4B3llum");
+            Statement statement = connection.createStatement();
+
+            //Create a delete
+            String deleteAllNurses = "UPDATE nurse " +
+                    "SET status = 'DELETED' WHERE nurseId = " + id;
+            statement.executeUpdate(deleteAllNurses);
+            System.out.println("SET nurse " + id + " to status DELETED");
+            System.out.println("Done!");
+
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------------
+    public void rebuildAllNurses(){
+
+        try {
+            //Create a connection to database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swingGuiTest",
+                    "root", "S1V1sP4c3mP4r4B3llum");
+            Statement statement = connection.createStatement();
+
+            //Create a delete
+            String rebuildAllNurses = "UPDATE nurse " +
+                    "SET status = 'ACTIVE' ";
+            statement.executeUpdate(rebuildAllNurses);
+            System.out.println("SET nurse to status ACTIVE");
+            System.out.println("Done!");
+
+            connection.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
         mainFrame mainFrame = new mainFrame();
     }

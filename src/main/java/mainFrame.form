@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="mainFrame">
-  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="9" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="10" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="583"/>
+      <xy x="20" y="20" width="670" height="611"/>
     </constraints>
     <properties>
-      <background color="-1"/>
+      <alignmentX value="0.5"/>
+      <background color="-1639169"/>
       <enabled value="false"/>
+      <font/>
       <foreground color="-4473925"/>
     </properties>
     <border type="none"/>
     <children>
-      <component id="2ea8c" class="javax.swing.JLabel" binding="labelTitle">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Cartella Clinica Elettronica"/>
-        </properties>
-      </component>
       <component id="3d01f" class="javax.swing.JTextField" binding="textFieldSurname">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -32,7 +26,7 @@
       </component>
       <component id="9467c" class="javax.swing.JLabel" binding="labelSurname">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="47" height="12"/>
           </grid>
         </constraints>
@@ -42,7 +36,7 @@
       </component>
       <component id="e43fb" class="javax.swing.JLabel" binding="labelName">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Name"/>
@@ -50,7 +44,7 @@
       </component>
       <component id="37315" class="javax.swing.JTextField" binding="textFieldName">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -60,16 +54,18 @@
       </component>
       <component id="3b331" class="javax.swing.JButton" binding="buttonOk">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="0" row-span="2" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <label value="Ok"/>
-          <text value="Ok"/>
+          <actionCommand value="buttonOk"/>
+          <label value="Add"/>
+          <selected value="false"/>
+          <text value="Add"/>
         </properties>
       </component>
       <component id="b6e72" class="javax.swing.JLabel" binding="labelJAVA">
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <name value="---"/>
@@ -78,19 +74,80 @@
       </component>
       <component id="cc548" class="javax.swing.JButton" binding="buttonSelectAllNurses">
         <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Select all nurses"/>
+          <text value="Select all"/>
+        </properties>
+      </component>
+      <component id="af798" class="javax.swing.JButton" binding="buttonDeleteAllNurses">
+        <constraints>
+          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <inheritsPopupMenu value="false"/>
+          <label value="Delete All"/>
+          <text value="Delete All"/>
         </properties>
       </component>
       <component id="2cbd1" class="javax.swing.JButton" binding="buttonClear">
         <constraints>
-          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <label value="Clear"/>
           <text value="Clear"/>
+        </properties>
+      </component>
+      <component id="26028" class="javax.swing.JButton" binding="buttonRebuild">
+        <constraints>
+          <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Rebuild All"/>
+        </properties>
+      </component>
+      <component id="d4bee" class="javax.swing.JButton" binding="buttonDeleteForId">
+        <constraints>
+          <grid row="9" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Delete"/>
+        </properties>
+      </component>
+      <component id="44202" class="javax.swing.JTextField" binding="textFieldId">
+        <constraints>
+          <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="294bb" class="javax.swing.JLabel" binding="labelId">
+        <constraints>
+          <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <inheritsPopupMenu value="true"/>
+          <text value="Delete for Id"/>
+        </properties>
+      </component>
+      <component id="2ea8c" class="javax.swing.JLabel" binding="labelTitle">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Droid Sans Mono Slashed" size="20"/>
+          <text value="Cartella Clinica Elettronica"/>
+        </properties>
+      </component>
+      <component id="1ffd4" class="javax.swing.JLabel" binding="labelRegisterNurse">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <foreground color="-11873526"/>
+          <text value="Register Nurse"/>
         </properties>
       </component>
     </children>
